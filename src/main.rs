@@ -9,12 +9,13 @@ static HELLO_WORLD: &[u8] = b"Hello World!";
 pub extern "C" fn _start() -> ! {
     let vga_buffer = 0xb8000 as *mut u8;
 
-    for (i, &byte) in HELLO_WORLD.iter().enumerate() {
-        unsafe {
+    HELLO_WORLD
+        .iter()
+        .enumerate()
+        .for_each(|(i, &byte)| unsafe {
             *vga_buffer.offset(i as isize * 2) = byte;
-            *vga_buffer.offset(i as isize * 2 + 1) = 0xb;
-        }
-    }
+            *vga_buffer.offset(i as isize * 2 + 1) = 0xd;
+        });
 
     loop {}
 }
